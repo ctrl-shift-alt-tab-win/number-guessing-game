@@ -30,7 +30,7 @@ h1 {
 input {
     padding: 8px;
     font-size: 16px;
-    width: 100px;
+    width: 150px;
     text-align: center;
     margin-right: 10px;
 }
@@ -47,7 +47,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #389b3d;
 }
 
 #message {

@@ -4,18 +4,52 @@ const guessButton = document.getElementById('guess-button');
 const newGameButton = document.getElementById('new-game-button');
 const message = document.getElementById('message');
 const history = document.getElementById('history');
+const menuScreen = document.getElementById('menu-screen');
+const gameArea = document.querySelector('.game-area');
+
 
 // Game variables
 let targetNumber;
 let guessCount;
 let gameActive;
+let maxRange;
+
+// Load the menu
+function initMenu() {
+    menuScreen.style.display = 'block';
+    message.style.display = 'none';
+    gameArea.style.display = 'none';
+    history.style.display = 'none';
+}
 
 // Initialize the game
-function initGame() {
-    targetNumber = Math.floor(Math.random() * 100) + 1; // Random number between 1-100
+function initGame(difficulty) {
+    menuScreen.style.display = 'none';
+    message.style.display = 'block';
+    gameArea.style.display = 'block';
+    history.style.display = 'block';
+
+    switch(difficulty) {
+        case 'easy':
+            maxRange = 20;
+            break;
+        case 'medium':
+            maxRange = 100;
+            break;
+        case 'hard':
+            maxRange = 1000;
+            break;
+        default:
+            maxRange = 100;
+    }
+    
+    guessInput.setAttribute('max', maxRange);
+    document.getElementById('max-range').textContent = maxRange;
+
+    targetNumber = Math.floor(Math.random() * maxRange) + 1; // Random number between 1-maxRange
     guessCount = 0;
     gameActive = true;
-    message.textContent = "I'm thinking of a number between 1 and 100!";
+    message.textContent = `I'm thinking of a number between 1 and ${maxRange}!`;
     message.style.color = "black";
     history.innerHTML = ""; // Clear history
     guessInput.value = ""; // Clear input
@@ -33,8 +67,8 @@ function handleGuess() {
     const userGuess = parseInt(guessInput.value);
     
     // Validate input
-    if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
-        message.textContent = "Please enter a valid number between 1 and 100.";
+    if (isNaN(userGuess) || userGuess < 1 || userGuess > maxRange) {
+        message.textContent = `Please enter a valid number between 1 and ${maxRange}.`;
         message.style.color = "red";
         return;
     }
@@ -66,7 +100,7 @@ function handleGuess() {
 
 // Event listeners
 guessButton.addEventListener('click', handleGuess);
-newGameButton.addEventListener('click', initGame);
+newGameButton.addEventListener('click', initMenu);
 
 // Allow pressing Enter to submit guess
 guessInput.addEventListener('keyup', function(event) {
@@ -76,4 +110,4 @@ guessInput.addEventListener('keyup', function(event) {
 });
 
 // Initialize game when page loads
-window.onload = initGame;
+window.onload = initMenu();
